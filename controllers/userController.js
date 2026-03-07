@@ -8,6 +8,12 @@ export const getUsers = (req, res) => {
 export const createUser = (req, res) => {
     const { name, age } = req.body;
 
+    if(!name || !age){
+        return res.status(400).json({
+            message: "Name and age are required."
+        })
+    }
+    
     const newUser = {
         id: nextId,
         name,

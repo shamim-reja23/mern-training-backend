@@ -1,5 +1,7 @@
 import express from "express";
 import userRoute from './routes/userRoute.js'
+import taskRoute from './routes/taskRoute.js'
+
 const app = express();
 const port = 4000;
 
@@ -10,7 +12,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/users", userRoute)
-
+app.use("/tasks", taskRoute)
 
 // app.post("/users", (req, res) => {
 //     res.json('user created !!')
