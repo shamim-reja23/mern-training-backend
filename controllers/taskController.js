@@ -94,19 +94,25 @@ export const updateTask = async (req, res) => {
    
 }
 
-export const deleteTask = (req, res) => {
-    const id = Number(req.params.id)
+export const deleteTask = async (req, res) => {
+    try {
+        const task = await Task.findByIdAndDelete(req.params.id)
 
-    const index = tasks.findIndex(task => task.id === id)
+        if(!task){
+            return res.status(404).json({ 
+                success: false,
+                error: "Task not found !!"
+            })
+        }
 
-    if(index === -1){
-        return res.status(404).json({ message: "Task not found !!"})
-    }
-
-    const deletedTask = tasks.splice(index, 1)
-
-    res.json({
-        message: "Task deleted successfully !!",
-        task: deletedTask[0]
-    })
+        res.json({
+            success: true,
+            message: "Task deleted."
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: "Server error"
+        })
+    }   
 }
