@@ -1,11 +1,19 @@
 import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+
 import userRoute from './routes/userRoute.js'
 import taskRoute from './routes/taskRoute.js'
 
+dotenv.config();
+
 const app = express();
-const port = 4000;
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json()); // enable parsing of JSON request bodies
+
+connectDB();
+
 
 app.get("/", (req, res) => {
     res.send('Hello World !!');
@@ -36,7 +44,7 @@ app.use("/tasks", taskRoute)
 //     console.log('Middleware 2');
 //     next();
 // })
-app.listen(port, () => {
-    console.log(`Example app listening on ${port}`);
+app.listen(PORT, () => {
+    console.log(`Example app listening on ${PORT}`);
     
 })
