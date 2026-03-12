@@ -3,11 +3,11 @@ import Task from "../models/task.js";
 
 export const getTasks = async (req, res) => {
     try {
-        const task = await Task.find();
+        const tasks = await Task.find({ userId: req.user.id});
 
         res.json({
             success: true,
-            data: task
+            data: tasks
         });
     } catch (error) {
         res.status(500).json({
@@ -28,7 +28,10 @@ export const createTask = async (req, res) => {
             })
         }
 
-        const task = await Task.create({ title })
+        const task = await Task.create({ 
+            title,
+            userId: req.user.id
+        })
 
         res.status(201).json({
             success: true,
@@ -45,7 +48,10 @@ export const createTask = async (req, res) => {
 
 export const getTaskById = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.id)
+        const task = await Task.findOne({
+            _id: req.params.id,
+            userId: req.user.id
+        })
 
         if(!task){
             return res.status(404).json({
@@ -58,6 +64,7 @@ export const getTaskById = async (req, res) => {
             success: true,
             data: task
         });
+        
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -68,8 +75,11 @@ export const getTaskById = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     try {
-        const task = await Task.findByIdAndUpdate(
-            req.params.id,
+        const task = await Task.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                userId: req.user.id
+            },
             req.body,
             { new: true }
         )
@@ -96,7 +106,10 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
     try {
-        const task = await Task.findByIdAndDelete(req.params.id)
+        const task = await Task.findOneAndDelete({
+            _id: req.params.id,
+            userId: req.user.id
+        })
 
         if(!task){
             return res.status(404).json({ 

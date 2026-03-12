@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const taskSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -8,6 +9,11 @@ const taskSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
 },
 {
