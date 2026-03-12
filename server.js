@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 
+import authRoute from './routes/authRoute.js'
 import userRoute from './routes/userRoute.js'
 import taskRoute from './routes/taskRoute.js'
 
@@ -10,7 +11,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(express.json()); // enable parsing of JSON request bodies
+app.use(express.json())// enable parsing of JSON request bodies
+
+app.use("/auth", authRoute); 
 
 connectDB();
 
